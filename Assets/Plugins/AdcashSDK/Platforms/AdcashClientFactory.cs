@@ -29,24 +29,13 @@ namespace AdcashSDK
 			#endif
 		}
 
-		internal static IAdcashConversionTrackerClient GetAdcashConversionTrackerClient()
+
+		internal static IAdcashRewardedVideoClient GetAdcashRewardedVideoClient( IAdListener listener)
 		{
 			#if UNITY_ANDROID
-			return new AdcashSDK.Android.AndroidConversionTrackerClient();
+			return new AdcashSDK.Android.AndroidRewardedVideoClient(listener);
 			#elif UNITY_IOS
-			return new AdcashSDK.iOS.IOSConversionTrackerClient();
-			#else
-			return new AdcashSDK.Common.DummyClient();
-			#endif
-		}
-
-
-		internal static IAdcashVideoClient GetAdcashVideoClient( IAdListener listener)
-		{
-			#if UNITY_ANDROID
-			return new AdcashSDK.Android.AndroidVideoClient(listener);
-			#elif UNITY_IOS
-			return new AdcashSDK.iOS.IOSVideoClient(listener);
+			return new AdcashSDK.iOS.IOSRewardedVideoClient(listener);
 			#else
 			return new AdcashSDK.Common.DummyClient();
 			#endif

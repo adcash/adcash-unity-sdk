@@ -103,7 +103,7 @@ namespace AdcashSDK.iOS
 		[MonoPInvokeCallback(typeof(ACUInterstitialWillDismissScreenCallback))]
 		private static void InterstitialWillDismissScreenCallback(IntPtr interstitialClient)
 		{
-			IntPtrToInterstitialClient(interstitialClient).listener.FireAdClosing();
+			IntPtrToInterstitialClient(interstitialClient).listener.FireAdClosed();
 		}
 		
 		[MonoPInvokeCallback(typeof(ACUInterstitialWillLeaveApplicationCallback))]

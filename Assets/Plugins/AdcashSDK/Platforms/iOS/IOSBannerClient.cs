@@ -111,7 +111,7 @@ namespace AdcashSDK.iOS
 		[MonoPInvokeCallback(typeof(ACUAdViewWillDismissScreenCallback))]
 		private static void AdViewWillDismissScreenCallback(IntPtr bannerClient)
 		{
-			IntPtrToBannerClient(bannerClient).listener.FireAdClosing();
+			IntPtrToBannerClient(bannerClient).listener.FireAdClosed();
 		}
 		
 		[MonoPInvokeCallback(typeof(ACUAdViewWillLeaveApplicationCallback))]

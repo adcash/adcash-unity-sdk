@@ -11,7 +11,7 @@ namespace AdcashSDK.Api
 		public event EventHandler<EventArgs> AdLoaded = delegate {};
 		public event EventHandler<AdFailedToLoadEventArgs> AdFailedToLoad = delegate {};
 		public event EventHandler<EventArgs> AdOpened = delegate {};
-		public event EventHandler<EventArgs> AdClosing = delegate {};
+		public event EventHandler<AdRewardEventArgs> AdReward = delegate {};
 		public event EventHandler<EventArgs> AdClosed = delegate {};
 		public event EventHandler<EventArgs> AdLeftApplication = delegate {};
 		
@@ -66,10 +66,13 @@ namespace AdcashSDK.Api
 		{
 			AdOpened(this, EventArgs.Empty);
 		}
-		
-		void IAdListener.FireAdClosing()
-		{
-			AdClosing(this, EventArgs.Empty);
+
+		void IAdListener.FireAdReward(string name, int amount) {
+			AdRewardEventArgs args = new AdRewardEventArgs () {
+				Name = name,
+				Amount = amount
+			};
+			AdReward (this, args);
 		}
 		
 		void IAdListener.FireAdClosed()

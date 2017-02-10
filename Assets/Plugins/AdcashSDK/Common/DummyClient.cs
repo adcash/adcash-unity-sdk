@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace AdcashSDK.Common
 {
-	internal class DummyClient : IAdcashBannerClient, IAdcashInterstitialClient, IAdcashConversionTrackerClient, IAdcashVideoClient
+	internal class DummyClient : IAdcashBannerClient, IAdcashInterstitialClient, IAdcashRewardedVideoClient
 	{
 		public DummyClient()
 		{
@@ -67,11 +67,11 @@ namespace AdcashSDK.Common
 		public void ReportAppOpen() {
 			Console.WriteLine("Dummy ReportAppOpen");
 		}
-		
+		/*
 		public void ReportConversion(int campaignId, string conversionType, Dictionary<string, string> otherParams) {
 			Console.WriteLine("Dummy ReportConversion");
 		}
-
+*/
 		public void Play() {
 			Console.WriteLine("Dummy Play");
 		}

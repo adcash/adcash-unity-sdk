@@ -1,23 +1,22 @@
-﻿Supported platforms:
+﻿## Supported platforms:
 
 * Android
 * iOS
 
-The plugin features include:
+## The plugin features include:
 
-* Mock ad calls when running inside Unity editor
 * Support for Banner Ads
 * Support for Interstitial Ads
-* Support for Video Interstitial Ads
+* Support for Rewarded Video Ads
 * Banner positions (top/bottom)
-* Banner ad events listeners
 
-The plugin contains a `.unitypackage` file for to support easy import of the plugin.
+The plugin contains a `.unitypackage` file to support easy import of the plugin.
 
 ## Requirements
 
 * Unity IDE 5
 * Zone id (click [here](https://www.adcash.com/console/scripts.php) to create one).
+* [Adcash Unity plugin](https://github.com/adcash/adcash-unity-sdk/raw/master/AdcashSDK.unitypackage).  
 * To deploy on **Android**:    
     * [Android SDK](https://developer.android.com/sdk/index.html#Other)
     * Deployment target of Android API 9 or higher
@@ -27,27 +26,40 @@ The plugin contains a `.unitypackage` file for to support easy import of the plu
 
 ## Integrate the Plugin
 
-#### Android Specific Setup
-**If** your project already contains a **AndroidManifest.xml** file in the Assets/Plugins/Android folder, then there is no need to import it in the next step. Only thing you need to do, if you plan to use interstitial/video ads is to add next lines **<application>** to body of your existing **AndroidManifest.xml**:    
-```xml    
+### Import Adcash package
+
+##### Android Specific Setup
+<b>If</b> your project already contains a <b>AndroidManifest.xml</b> file in the Assets/Plugins/Android folder, then there is no need to import it in the next step, just make this changes:
+1. Add the following `uses-permission` tags: 
+    * INTERNET - required to allow the Adcash SDK to make ad requests.
+    * ACCESS_NETWORK_STATE - used to check the Network connection availability.  
+```xml  
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+```
+
+2. Add <b>AdcashActivity</b> for full screen ads to work (interstitial and rewarded video)  
+```xml
 <activity
-    android:name="com.adcash.mobileads.ui.AdcashActivity"
+    android:name="com.adcash.mobileads.ui.AdcashActivity"  
     android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" 
-    android:theme="@android:style/Theme.Translucent"
+    android:theme="@style/AdcashTheme"
     android:hardwareAccelerated="true" /> 
 ```
 
-#### Import Adcash package
+##### General setup
+
 1. Open your project in the Unity editor.
-2. Navigate to **Assets > Import Package > Custom Package...**
+2. Navigate to <b>Assets > Import Package > Custom Package...</b>
 3. Select the `.unitypackage` file.
-4. Import all of the files for the plugins by selecting **Import**. 
+4. Import all of the files for the plugins by selecting <b>Import</b>. 
 5. Make sure to check for any conflicts with files.
 
-#### Adcash SDK Unity API
+## Adcash SDK Unity API
 The remainder of this guide assumes you are now attempting to write your own code to integrate the Adcash SDK into your game.
 
-## Banner
+
+### Banner
 Here is a snippet showing how to create a banner:
 
 ```csharp
@@ -57,7 +69,10 @@ using AdcashSDK.Api;
 BannerView bannerView = new BannerView("YOUR_ZONE_ID", AdPosition.Top);
 // Load the banner with the request.
 bannerView.LoadAd();
+// Don't forget to call bannerView.Destroy() when you don't need bannerView any more.
 ```
+
+**More detailed description**
 
 The `AdPosition` enum specifies where to place the banner. The following constants are the possible ad positions:
 
@@ -90,11 +105,11 @@ The banner lifecycle is fairly straightforward:
     bannerView.Destroy();
     ```
 
-## Interstitial
+### Interstitial
 The following is a snippet to create an interstitial:
 
 ```csharp
-using Plugin.Api;
+using AdcashSDK.Api;
 ...
 // Initialize an Interstitial.
 Interstitial interstitial = new Interstitial("MY_AD_UNIT_ID"); 
@@ -117,32 +132,29 @@ Similar to banners, the interstitials also have a destroy method:
 interstitial.Destroy();
 ```
 
-## Video 
- > (**Video calls on Android as same as Interstitials**)
+### Rewarded Video
 
-The following is a snippet to create a video on iOS:
+The following is a snippet to create a rewarded video:
 
 ```csharp
-using Plugin.Api;
+using AdcashSDK.Api;
 ...
-// Initialize and load a Video.
-VideoIOS video = new VideoIOS("MY_AD_UNIT_ID"); 
+// Initialize and load a Rewarded Video.
+RewardedVideo rewardedVideo = new RewardedVideo ("MY_AD_UNIT_ID"); 
+rewardedVideo.AdLoaded += HandleVideoLoaded;
+rewardedVideo.AdReward += HandleVideoRewarded;
+rewardedVideo.LoadAd();
 ```
 
-At an appropriate point in your app you should check that the video is ready before showing it:
-
-
-```csharp
-if (video != null)) {
-    video.Play();
-}
-```
-
-Alternatively, to play video just after loading completed;
+To play video just after loading completed as well as to give reward;
 
 ```csharp
 public void HandleVideoLoaded (object sender, EventArgs args){
-	video.Play();
+    rewardedVideo.Show();
+}
+
+public void HandleVideoRewarded (object sender, AdRewardEventArgs args){
+    // Give user reward here
 }
 ```
 
@@ -169,20 +181,26 @@ bannerView.AdClosed += HandleAdClosed;
 bannerView.AdLeftApplication += HandleAdLeftApplication;
 ...
 
-public void HandleAdLoaded(object sender, EventArgs args)
-{
+public void HandleAdLoaded(object sender, EventArgs args) {
     print("HandleAdLoaded event received.");
     // Handle the ad loaded event.
 }
 ```
 
-The only event with special event arguments is `AdFailedToLoad`. It passes an instance of `AdFailedToLoadEventArgs` with a `Message` describing the error:
-
+There are two special events that are with arguments.
+First is `AdFailedToLoad`. It passes an instance of `AdFailedToLoadEventArgs` with a `Message` describing the error:
 ```csharp
-public void HandleAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
-{
-  print("Interstitial Failed to load: " + args.Message);
+public void HandleAdFailedToLoad(object sender, AdFailedToLoadEventArgs args) {
+  print("Ad failed to load: " + args.Message);
   // Handle the ad failed to load event.
+};
+```
+
+Second is `AdReward` event. This event is only for `RewardedVideo` ad type and it contains reward information if it was specified in publisher panel:
+```csharp
+public void HandleVideoReward(object sender, AdRewardEventArgs args) {
+    print("You received " + args.Amount + " " + args.Name);
+    // Handle rewarding your user.
 };
 ```
 

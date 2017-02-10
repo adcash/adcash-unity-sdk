@@ -1,4 +1,4 @@
-
+/*
 #if UNITY_IOS
 using System;
 using System.Collections.Generic;
@@ -19,13 +19,13 @@ namespace AdcashSDK.iOS
 		}
 		
 		// Load an ad.
-		/*
+
 		public void ReportConversion(String campaign, String payout)
 		{
 			Console.WriteLine ("<Adcash>: Custom campaign conversion is not supported in iOS. The method call will be ignored.");
 		}
-		*/
+
 	}
 }
 #endif
-
+*/

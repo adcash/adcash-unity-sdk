@@ -8,7 +8,7 @@ namespace AdcashSDK.Common
 		void FireAdLoaded();
 		void FireAdFailedToLoad(int message);
 		void FireAdOpened();
-		void FireAdClosing();
+		void FireAdReward(string rewardName, int rewardAmount);
 		void FireAdClosed();
 		void FireAdLeftApplication();
 	}

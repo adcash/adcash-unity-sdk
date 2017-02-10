@@ -17,8 +17,9 @@ namespace AdcashSDK.Android
 		#region Adcash Mobile Ads Unity Plugin class names		
 		public const string BannerViewClassName = "com.adcash.unity.mobileads.Banner";
 		public const string InterstitialClassName = "com.adcash.unity.mobileads.Interstitial";
+		public const string RewardedVideoClassName = "com.adcash.unity.mobileads.RewardedVideo";
 		public const string UnityAdListenerClassName = "com.adcash.unity.mobileads.UnityAdListener";
-		public const string TrackerClassName = "com.adcash.unity.mobileads.ConversionTracker";
+		public const string UnityRewardedAdListenerClassName = "com.adcash.unity.mobileads.UnityRewardedAdListener";
 		#endregion
 		
 		#region Unity class names	

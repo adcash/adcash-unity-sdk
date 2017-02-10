@@ -9,11 +9,7 @@ public class AdcashDemoScript : MonoBehaviour
 
 	private BannerView bannerView;
 	private Interstitial interstitial;
-	#if UNITY_ANDROID
-	private VideoAndroid video;
-	#elif UNITY_IOS
-	private VideoIOS video;
-	#endif
+	private RewardedVideo rewardedVideo;
 
 	static float buttonHeight;
 	static float buttonWidth;
@@ -64,29 +60,19 @@ public class AdcashDemoScript : MonoBehaviour
 		}
 
 		Rect loadVideoRect = CreateNewButtonPlaceHolder ();
-		if (GUI.Button (loadVideoRect, "Load Video")) {
+		if (GUI.Button (loadVideoRect, "Load Rewarded Video")) {
 			isLoading = true;
-			RequestVideo ();
+			RequestRewardedVideo ();
 		}
 
 		Rect showVideoRect = CreateNewButtonPlaceHolder ();
-		if (GUI.Button (showVideoRect, "Show Video")) {
+		if (GUI.Button (showVideoRect, "Show Rewarded Video")) {
 			ShowVideo ();
 		}
 
 		Rect destroyVideoRect = CreateNewButtonPlaceHolder ();
-		if (GUI.Button (destroyVideoRect, "Destroy Video")) {
-			#if UNITY_ANDROID
-			video.Destroy ();
-			#elif UNITY_IOS
-			video.Destroy ();
-			#endif
-		}
-
-		Rect reportConversion = CreateNewButtonPlaceHolder ();
-		if (GUI.Button (reportConversion, "Report Conversion")) {
-			ConversionTracker tracker = new ConversionTracker();
-			tracker.ReportConversion(42755473,"Installation", null);
+		if (GUI.Button (destroyVideoRect, "Destroy Rewarded Video")) {
+			rewardedVideo.Destroy ();
 		}
 
 		DisplayStatus ();
@@ -115,35 +101,25 @@ public class AdcashDemoScript : MonoBehaviour
 		GUI.Label(new Rect(0, 0, Screen.width, buttonHeight), message);
 	}
 
-	private void RequestVideo ()
+	private void RequestRewardedVideo ()
 	{
-
 		#if UNITY_ANDROID
-		isLoading = true;
-		string adUnitId = "1396575";
-		video = new VideoAndroid (adUnitId);
-		// Register for ad events.
-		video.AdLoaded += HandleVideoLoaded;
-		video.AdFailedToLoad += HandleVideoFailedToLoad;
-		video.AdOpened += HandleVideoOpened;
-		video.AdClosing += HandleVideoClosing;
-		video.AdClosed += HandleVideoClosed;
-		video.AdLeftApplication += HandleVideoLeftApplication;
-		// Load a video ad.
-		video.LoadAd ();
+		string adUnitId = "1461193";
 		#elif UNITY_IOS
-		string adUnitId = "1352521";
-		video = new VideoIOS (adUnitId);
-		isLoading = false;
-		// Register for ad events.
-		video.AdLoaded += HandleVideoLoaded;
-		video.AdFailedToLoad += HandleVideoFailedToLoad;
-		video.AdOpened += HandleVideoOpened;
-		video.AdClosing += HandleVideoClosing;
-		video.AdClosed += HandleVideoClosed;
-		video.AdLeftApplication += HandleVideoLeftApplication;
+		string adUnitId = "1461193";
+		#else
+		string adUnitId = "unused";
 		#endif
 
+		isLoading = true;
+		rewardedVideo = new RewardedVideo (adUnitId);
+		// Register for ad events.
+		rewardedVideo.AdLoaded += HandleVideoLoaded;
+		rewardedVideo.AdFailedToLoad += HandleVideoFailedToLoad;
+		rewardedVideo.AdOpened += HandleVideoOpened;
+		rewardedVideo.AdReward += HandleVideoRewarded;
+		rewardedVideo.AdClosed += HandleVideoClosed;
+		rewardedVideo.AdLeftApplication += HandleVideoLeftApplication;
 	}
 
 	private BannerView InitBanner ()
@@ -153,7 +129,7 @@ public class AdcashDemoScript : MonoBehaviour
 		#if UNITY_ANDROID
 		string adUnitId = "1252974";
 		#elif UNITY_IOS
-		string adUnitId = "1253040";
+		string adUnitId = "1461197";
 		#else
 		string adUnitId = "unused";
 		#endif
@@ -164,7 +140,6 @@ public class AdcashDemoScript : MonoBehaviour
 		bannerView.AdLoaded += HandleAdLoaded;
 		bannerView.AdFailedToLoad += HandleAdFailedToLoad;
 		bannerView.AdOpened += HandleAdOpened;
-		bannerView.AdClosing += HandleAdClosing;
 		bannerView.AdClosed += HandleAdClosed;
 		bannerView.AdLeftApplication += HandleAdLeftApplication;
 		// Load a banner ad.
@@ -178,7 +153,7 @@ public class AdcashDemoScript : MonoBehaviour
 		isLoading = true;
 
 		#if UNITY_ANDROID
-		string adUnitId = "1252998";
+		string adUnitId = "1461177";
 		#elif UNITY_IOS
 		string adUnitId = "1253058";
 		#else
@@ -191,7 +166,6 @@ public class AdcashDemoScript : MonoBehaviour
 		interstitial.AdLoaded += HandleInterstitialLoaded;
 		interstitial.AdFailedToLoad += HandleInterstitialFailedToLoad;
 		interstitial.AdOpened += HandleInterstitialOpened;
-		interstitial.AdClosing += HandleInterstitialClosing;
 		interstitial.AdClosed += HandleInterstitialClosed;
 		interstitial.AdLeftApplication += HandleInterstitialLeftApplication;
 		// Load an interstitial ad.
@@ -210,16 +184,10 @@ public class AdcashDemoScript : MonoBehaviour
 
 	private void ShowVideo ()
 	{
+		if (rewardedVideo != null) {
+		    rewardedVideo.Show ();
+		}
 
-		#if UNITY_ANDROID
-		if (video != null) {
-			video.Show ();
-		}
-		#elif UNITY_IOS
-		if (video != null) { 
-			video.Play ();
-		}
-		#endif
 	}
 
 	#region Banner callback handlers
@@ -239,11 +207,6 @@ public class AdcashDemoScript : MonoBehaviour
 	public void HandleAdOpened (object sender, EventArgs args)
 	{
 		print ("HandleAdOpened event received");
-	}
-
-	void HandleAdClosing (object sender, EventArgs args)
-	{
-		print ("HandleAdClosing event received");
 	}
 
 	public void HandleAdClosed (object sender, EventArgs args)
@@ -278,11 +241,6 @@ public class AdcashDemoScript : MonoBehaviour
 		print ("HandleInterstitialOpened event received");
 	}
 
-	void HandleInterstitialClosing (object sender, EventArgs args)
-	{
-		print ("HandleInterstitialClosing event received");
-	}
-
 	public void HandleInterstitialClosed (object sender, EventArgs args)
 	{
 		print ("HandleInterstitialClosed event received");
@@ -314,9 +272,9 @@ public class AdcashDemoScript : MonoBehaviour
 		print ("HandleVideoOpened event received");
 	}
 
-	void HandleVideoClosing (object sender, EventArgs args)
+	public void HandleVideoRewarded (object sender, AdRewardEventArgs args)
 	{
-		print ("HandleVideoClosing event received");
+		print ("HandleVideoReward event received " + args.Amount + " " + args.Name);
 	}
 
 	public void HandleVideoClosed (object sender, EventArgs args)

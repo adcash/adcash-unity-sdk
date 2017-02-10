@@ -84,6 +84,7 @@ namespace AdcashSDK.iOS
 
 		#endregion
 
+/*
 		#region Video externs
 
 		[DllImport("__Internal")]
@@ -102,7 +103,27 @@ namespace AdcashSDK.iOS
 		IOSVideoClient.ACUVideoDidDismissScreenCallback didDismissCallback,
 		IOSVideoClient.ACUVideoWillLeaveApplicationCallback willLeaveCallback);
 		#endregion
+*/
 
+		#region Rewarded Video externs
+
+		[DllImport("__Internal")]
+		internal static extern void ACUShowRewardedVideo (IntPtr rewardedVideo);
+
+		[DllImport("__Internal")]
+		internal static extern IntPtr ACUCreateRewardedVideo(IntPtr rewardedVideoClient, string zoneID);
+
+		[DllImport("__Internal")]
+		internal static extern IntPtr ACUSetRewardedVideoCallbacks(
+		IntPtr rewardedVideo,
+		IOSRewardedVideoClient.ACURewardedVideoDidReceiveAdCallback adReceivedCallback,
+		IOSRewardedVideoClient.ACURewardedVideoDidFailToReceiveAdCallback adFailedCallback,
+		IOSRewardedVideoClient.ACURewardedVideoWillPresentScreenCallback willPresentCallback,
+		IOSRewardedVideoClient.ACURewardedVideoWillDismissScreenCallback willDismissCallback,
+		IOSRewardedVideoClient.ACURewardedVideoDidDismissScreenCallback didDismissCallback,
+		IOSRewardedVideoClient.ACURewardedVideoWillLeaveApplicationCallback willLeaveCallback,
+		IOSRewardedVideoClient.ACURewardedVideoDidCompleteWithRewardCallback completedWithRewardCallback);
+		#endregion
 	}
 }
 #endif

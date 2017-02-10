@@ -26,7 +26,6 @@ namespace AdcashSDK.Android
 		}
 		
 		void onAdClosed() {
-			listener.FireAdClosing();
 			listener.FireAdClosed();
 		}
 		
