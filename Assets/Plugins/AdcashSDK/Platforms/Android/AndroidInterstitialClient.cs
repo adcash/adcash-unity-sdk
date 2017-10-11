@@ -37,7 +37,7 @@ namespace AdcashSDK.Android
 		}
 		
 		public void ShowInterstitial() {
-			interstitial.Call("showAd");
+			interstitial.Call("show");
 		}
 		
 		public void DestroyInterstitial() {

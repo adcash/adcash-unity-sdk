@@ -53,12 +53,6 @@ public class AdcashDemoScript : MonoBehaviour
 			RequestInterstitial ();
 		}
 
-		Rect destroyInterstitialRect = CreateNewButtonPlaceHolder ();
-		if (GUI.Button (destroyInterstitialRect, "Destroy Interstitial")) {
-			interstitial.Destroy ();
-
-		}
-
 		Rect loadVideoRect = CreateNewButtonPlaceHolder ();
 		if (GUI.Button (loadVideoRect, "Load Rewarded Video")) {
 			isLoading = true;
@@ -68,11 +62,6 @@ public class AdcashDemoScript : MonoBehaviour
 		Rect showVideoRect = CreateNewButtonPlaceHolder ();
 		if (GUI.Button (showVideoRect, "Show Rewarded Video")) {
 			ShowVideo ();
-		}
-
-		Rect destroyVideoRect = CreateNewButtonPlaceHolder ();
-		if (GUI.Button (destroyVideoRect, "Destroy Rewarded Video")) {
-			rewardedVideo.Destroy ();
 		}
 
 		DisplayStatus ();
@@ -106,7 +95,7 @@ public class AdcashDemoScript : MonoBehaviour
 		#if UNITY_ANDROID
 		string adUnitId = "1461193";
 		#elif UNITY_IOS
-		string adUnitId = "1461193";
+		string adUnitId = "1587947";
 		#else
 		string adUnitId = "unused";
 		#endif
@@ -127,7 +116,7 @@ public class AdcashDemoScript : MonoBehaviour
 		isLoading = true;
 
 		#if UNITY_ANDROID
-		string adUnitId = "1252974";
+		string adUnitId = "1461185";
 		#elif UNITY_IOS
 		string adUnitId = "1461197";
 		#else
@@ -155,7 +144,7 @@ public class AdcashDemoScript : MonoBehaviour
 		#if UNITY_ANDROID
 		string adUnitId = "1461177";
 		#elif UNITY_IOS
-		string adUnitId = "1253058";
+		string adUnitId = "1587903";
 		#else
 		string adUnitId = "unused";
 		#endif

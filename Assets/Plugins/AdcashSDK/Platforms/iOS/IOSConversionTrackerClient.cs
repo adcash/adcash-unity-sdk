@@ -17,7 +17,7 @@ namespace AdcashSDK.iOS
 		public void ReportConversion(int campaignId, string conversionType, Dictionary<string, string> otherParams) {
 			Externs.ACUReportAppOpenConversion (campaignId,conversionType,otherParams);
 		}
-		
+
 		// Load an ad.
 
 		public void ReportConversion(String campaign, String payout)

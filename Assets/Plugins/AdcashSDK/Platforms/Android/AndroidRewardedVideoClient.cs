@@ -44,7 +44,7 @@ namespace AdcashSDK.Android
 		}
 		
 		public void ShowVideo() {
-			rewardedVideo.Call("showAd");
+			rewardedVideo.Call("show");
 		}
 		
 		public void Destroy() {

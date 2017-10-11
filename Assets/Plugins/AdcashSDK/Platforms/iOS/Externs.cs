@@ -10,14 +10,14 @@ namespace AdcashSDK.iOS
 	internal class Externs
 	{
 		#region Common externs
-		
+
 		[DllImport("__Internal")]
 		internal static extern void ACURelease(IntPtr obj);
-		
+
 		#endregion
-		
+
 		#region Banner externs
-		
+
 		[DllImport("__Internal")]
 		internal static extern IntPtr ACUCreateSmartBannerView(
 			IntPtr bannerClient, string adUnitId, int positionAtTop);
@@ -34,27 +34,27 @@ namespace AdcashSDK.iOS
 			IOSBannerClient.ACUAdViewWillPresentScreenCallback willPresentCallback,
 			IOSBannerClient.ACUAdViewWillDismissScreenCallback willDismissCallback,
 			IOSBannerClient.ACUAdViewWillLeaveApplicationCallback willLeaveCallback);
-		
+
 		[DllImport("__Internal")]
 		internal static extern void ACUHideBannerView(IntPtr bannerView);
-		
+
 		[DllImport("__Internal")]
 		internal static extern void ACUShowBannerView(IntPtr bannerView);
-		
+
 		[DllImport("__Internal")]
 		internal static extern void ACURemoveBannerView(IntPtr bannerView);
-		
+
 		[DllImport("__Internal")]
 		internal static extern void ACURequestBannerAd(IntPtr bannerView);
-		
+
 		#endregion
-		
+
 		#region Interstitial externs
-		
+
 		[DllImport("__Internal")]
 		internal static extern IntPtr ACUCreateInterstitial(
 			IntPtr interstitialClient, string adUnitId);
-		
+
 		[DllImport("__Internal")]
 		internal static extern void ACUSetInterstitialCallbacks(
 			IntPtr interstitial,
@@ -65,23 +65,23 @@ namespace AdcashSDK.iOS
 			IOSInterstitialClient.ACUInterstitialWillDismissScreenCallback willDismissCallback,
 			IOSInterstitialClient.ACUInterstitialWillLeaveApplicationCallback
 			willLeaveCallback);
-		
+
 		[DllImport("__Internal")]
 		internal static extern bool ACUInterstitialReady(IntPtr interstitial);
-		
+
 		[DllImport("__Internal")]
 		internal static extern void ACUShowInterstitial(IntPtr interstitial);
-		
+
 		[DllImport("__Internal")]
 		internal static extern void ACURequestInterstitial(IntPtr interstitial);
-		
+
 		#endregion
 
 		#region Conversion tracker externs
-
+/*
 		[DllImport("__Internal")]
 		internal static extern void ACUReportAppOpenConversion(int campaignId, string conversionType, Dictionary<string,string> otherParams);
-
+*/
 		#endregion
 
 /*
